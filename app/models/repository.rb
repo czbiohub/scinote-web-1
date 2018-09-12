@@ -2,6 +2,7 @@ class Repository < ApplicationRecord
   include SearchableModel
   include RepositoryImportParser
   include Discard::Model
+  include Webhook::Observable
 
   attribute :discarded_by_id, :integer
 

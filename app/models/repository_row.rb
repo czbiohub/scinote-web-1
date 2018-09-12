@@ -1,5 +1,6 @@
 class RepositoryRow < ApplicationRecord
   include SearchableModel
+  include Webhook::Observable
 
   belongs_to :repository, optional: true
   belongs_to :created_by,
@@ -29,5 +30,18 @@ class RepositoryRow < ApplicationRecord
 
   def self.name_like(query)
     where('repository_rows.name ILIKE ?', "%#{query}%")
+  end
+
+  private
+
+  def webhook_scope
+
+  end
+
+  def webhook_payload
+    ActiveModelSerializers::SerializableResource
+              .new(self,
+                   each_serializer: Api::V1::InventoryItemSerializer,
+                   include: :inventory_cells)
   end
 end
