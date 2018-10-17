@@ -5,17 +5,21 @@ describe('Inventory', function() {
   const repositoryName = faker.name.findName()
   const updatedRepositoryName = faker.name.findName()
 
-  beforeEach(function(){
+  before(function(){
     cy.visit('/users/sign_in')
     cy.get('#user_email').type('admin@scinote.net')
+    cy.get('#user_remember_me').check()
     cy.get('#user_password').type(`inHisHouseAtRlyehDeadCthulhuWaitsDreaming{enter}`)
+  })
+
+  beforeEach(function(){
+    Cypress.Cookies.preserveOnce('_scinote_session', 'remember_user_token')
   })
 
   it('Sends webhook on create new inventory', function() {
     cy.visit('/repositories')
     cy.get('#create-new-repository').click()
     cy.get('#repository_name').type(`${repositoryName}{enter}`)
-    cy.wait(5000)
     cy.request({
       url: 'http://localhost:15672/api/queues/%2F/inventory_event_queue/get',
       method: 'POST',
@@ -40,7 +44,6 @@ describe('Inventory', function() {
     cy.get('.rename-repo-option').click()
     cy.get('#repository_name').clear()
     cy.get('#repository_name').type(`${updatedRepositoryName}{enter}`)
-    cy.wait(5000)
     cy.request({
       url: 'http://localhost:15672/api/queues/%2F/inventory_event_queue/get',
       method: 'POST',
@@ -63,7 +66,6 @@ describe('Inventory', function() {
     cy.get('#repository-acitons-dropdown').click()
     cy.get('.delete-repo-option').click()
     cy.get('#confirm-repo-delete').click()
-    cy.wait(5000)
     cy.request({
       url: 'http://localhost:15672/api/queues/%2F/inventory_event_queue/get',
       method: 'POST',
