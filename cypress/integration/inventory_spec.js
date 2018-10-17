@@ -6,6 +6,7 @@ describe('Inventory', function() {
   const updatedRepositoryName = faker.name.findName()
 
   before(function(){
+    cy.clearCookies()
     cy.visit('/users/sign_in')
     cy.get('#user_email').type('admin@scinote.net')
     cy.get('#user_remember_me').check()
