@@ -34,10 +34,6 @@ class RepositoryRow < ApplicationRecord
 
   private
 
-  def webhook_scope
-
-  end
-
   def webhook_payload
     # puts self.inspect
     ActiveModelSerializers::SerializableResource
