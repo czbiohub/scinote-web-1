@@ -95,6 +95,8 @@ gem 'devise_security_extension',
 # Permission helper Gem
 gem 'canaid', git: 'https://github.com/biosistemika/canaid', branch: 'master'
 
+gem 'scinote-webhook', path: '/Users/michael.chea/Projects/scinote-webhook'
+
 group :development, :test do
   gem 'listen', '~> 3.0'
   gem 'byebug'

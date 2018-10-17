@@ -21,7 +21,7 @@ default: &default
   pool: 5
   username: postgres
   password: mysecretpassword
-  host: db
+  host: localhost
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
 

@@ -2,6 +2,7 @@ class Repository < ApplicationRecord
   include SearchableModel
   include RepositoryImportParser
   include Discard::Model
+  include Webhook::Observable
 
   attribute :discarded_by_id, :integer
 
@@ -121,4 +122,14 @@ class Repository < ApplicationRecord
   handle_asynchronously :destroy_discarded,
                         queue: :clear_discarded_repository,
                         priority: 20
+
+  def webhook_scope
+
+  end
+
+  def webhook_payload
+    ActiveModelSerializers::SerializableResource
+              .new(self,
+                   each_serializer: Api::V1::InventorySerializer)
+  end
 end
