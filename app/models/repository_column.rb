@@ -1,4 +1,6 @@
 class RepositoryColumn < ApplicationRecord
+  include Webhook::Observable
+
   belongs_to :repository, optional: true
   belongs_to :created_by,
              foreign_key: :created_by_id,
@@ -57,5 +59,14 @@ class RepositoryColumn < ApplicationRecord
 
   def importable?
     Extends::REPOSITORY_IMPORTABLE_TYPES.include?(data_type.to_sym)
+  end
+
+  private
+
+  def webhook_payload
+    # puts self.inspect
+    ActiveModelSerializers::SerializableResource
+              .new(self,
+                   each_serializer: Api::V1::InventoryColumnSerializer)
   end
 end
